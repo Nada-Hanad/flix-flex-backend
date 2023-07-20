@@ -7,9 +7,6 @@ const morgan = require("morgan");
 require("dotenv").config();
 const swaggerConfig = require("./config/swaggerConfig");
 
-const fs = require("fs");
-const path = require("path");
-
 // Require database connection code from config file
 require("./config/dbConfig");
 
@@ -26,15 +23,6 @@ app.use(cors());
 
 // Serve Swagger documentation
 app.use("/api-docs", swaggerConfig.serve, swaggerConfig.setup);
-
-// Define a log file path
-const logFilePath = path.join(__dirname, "logger", "access.log");
-
-// Create a write stream for logging
-const logStream = fs.createWriteStream(logFilePath, { flags: "a" });
-
-// Use morgan middleware for logging with combined format and custom log file
-app.use(morgan("combined", { stream: logStream }));
 
 // Mount routes under the '/api' base URL
 app.use("/api/V1", routesV1);
